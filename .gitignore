@@ -6,7 +6,20 @@
 *.ko
 *.obj
 *.elf
-
+dependencies.lock
+.venv-training/
+build/
+dist/
+__pycache__/
+.vscode/
+codigo/
+.venv-training
+test/
+managed_components/
+datasets/
+.lock
+.venv
+.lock
 # Linker output
 *.ilk
 *.map
