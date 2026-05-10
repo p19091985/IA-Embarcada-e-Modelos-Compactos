@@ -1,0 +1,22 @@
+{
+  "name": "CD4511 BCD to 7 Segment",
+  "author": "patrik lima pereira",
+  "pins": [
+    "VDD",
+    "VSS",
+    "A",
+    "B",
+    "C",
+    "D",
+    "LT",
+    "BL",
+    "LE",
+    "SEG_A",
+    "SEG_B",
+    "SEG_C",
+    "SEG_D",
+    "SEG_E",
+    "SEG_F",
+    "SEG_G"
+  ]
+}

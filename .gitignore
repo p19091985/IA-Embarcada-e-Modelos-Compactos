@@ -1,13 +1,18 @@
 *.d
 test/
+!test/
+!test/**
 codigo/
 .vscode
 .vscode/
+datasets/
+relatorio.html
+relatorio_abnt.pdf
 *.o
 *.ko
 *.obj
 *.elf
-
+projetoLegado/
 *.ilk
 *.map
 *.exp
@@ -48,5 +53,8 @@ dkms.conf
 build/
 managed_components/
 dependencies.lock
+.venv/
+.venv-*/
+main/models/notebook_outputs/
 
 *.dwo

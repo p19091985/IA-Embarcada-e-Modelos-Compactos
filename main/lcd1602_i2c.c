@@ -19,6 +19,7 @@ static esp_err_t lcd_pulsar_enable(lcd1602_t *lcd, uint8_t byte);
 static esp_err_t lcd_enviar_4_bits(lcd1602_t *lcd, uint8_t byte);
 static esp_err_t lcd_enviar(lcd1602_t *lcd, uint8_t valor, uint8_t modo);
 static esp_err_t lcd_comando(lcd1602_t *lcd, uint8_t comando);
+static esp_err_t lcd_definir_caractere(lcd1602_t *lcd, uint8_t indice, const uint8_t bitmap[8]);
 static esp_err_t lcd_escrever_caractere(lcd1602_t *lcd, char caractere);
 static esp_err_t lcd_posicionar_cursor(lcd1602_t *lcd, uint8_t coluna, uint8_t linha);
 
@@ -56,6 +57,41 @@ esp_err_t lcd1602_iniciar(lcd1602_t *lcd, const lcd1602_config_t *configuracao)
     ESP_RETURN_ON_ERROR(lcd_comando(lcd, 0x01), TAG_LCD, "falha limpar LCD");
     ESP_RETURN_ON_ERROR(lcd_comando(lcd, 0x06), TAG_LCD, "falha modo escrita");
     ESP_RETURN_ON_ERROR(lcd_comando(lcd, 0x0C), TAG_LCD, "falha display on");
+
+    const uint8_t c_cedilha[8] = {
+        0x0E,
+        0x11,
+        0x10,
+        0x10,
+        0x11,
+        0x0E,
+        0x04,
+        0x0C,
+    };
+    const uint8_t a_til[8] = {
+        0x0A,
+        0x04,
+        0x0E,
+        0x11,
+        0x1F,
+        0x11,
+        0x11,
+        0x00,
+    };
+    const uint8_t i_agudo[8] = {
+        0x02,
+        0x04,
+        0x0E,
+        0x04,
+        0x04,
+        0x04,
+        0x0E,
+        0x00,
+    };
+
+    ESP_RETURN_ON_ERROR(lcd_definir_caractere(lcd, 1, c_cedilha), TAG_LCD, "falha caractere Ç");
+    ESP_RETURN_ON_ERROR(lcd_definir_caractere(lcd, 2, a_til), TAG_LCD, "falha caractere Ã");
+    ESP_RETURN_ON_ERROR(lcd_definir_caractere(lcd, 3, i_agudo), TAG_LCD, "falha caractere Í");
 
     return ESP_OK;
 }
@@ -112,6 +148,18 @@ static esp_err_t lcd_comando(lcd1602_t *lcd, uint8_t comando)
     return resultado;
 }
 
+static esp_err_t lcd_definir_caractere(lcd1602_t *lcd, uint8_t indice, const uint8_t bitmap[8])
+{
+    indice &= 0x07;
+    ESP_RETURN_ON_ERROR(lcd_comando(lcd, 0x40 | (indice << 3)), TAG_LCD, "falha CGRAM");
+
+    for (int linha = 0; linha < 8; linha++) {
+        ESP_RETURN_ON_ERROR(lcd_enviar(lcd, bitmap[linha], LCD_REGISTRO_DADOS), TAG_LCD, "falha bitmap");
+    }
+
+    return ESP_OK;
+}
+
 static esp_err_t lcd_escrever_caractere(lcd1602_t *lcd, char caractere)
 {
     return lcd_enviar(lcd, (uint8_t)caractere, LCD_REGISTRO_DADOS);
@@ -130,4 +178,3 @@ static esp_err_t lcd_posicionar_cursor(lcd1602_t *lcd, uint8_t coluna, uint8_t l
 
     return lcd_comando(lcd, 0x80 | (uint8_t)(coluna + inicio_linhas[linha]));
 }
-

@@ -1,4 +1,4 @@
 cmake_minimum_required(VERSION 3.16)
 
 include($ENV{IDF_PATH}/tools/cmake/project.cmake)
-project(wokwi_dht_lcd)
+project(wokwi_soil_ai)

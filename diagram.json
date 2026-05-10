@@ -3,33 +3,220 @@
   "author": "patrik lima pereira",
   "editor": "wokwi",
   "parts": [
-    { "type": "board-esp32-s3-devkitc-1", "id": "esp", "top": 10, "left": -20, "attrs": {} },
+    { "type": "board-esp32-s3-devkitc-1", "id": "esp", "top": 120, "left": -160, "attrs": {} },
     {
       "type": "wokwi-lcd1602",
-      "id": "lcd1",
-      "top": -128,
-      "left": 159.2,
+      "id": "lcd_i2c",
+      "top": -180,
+      "left": -50,
       "attrs": { "pins": "i2c", "i2cAddress": "0x27" }
     },
     {
-      "type": "wokwi-dht22",
-      "id": "dht1",
-      "top": 33.6,
-      "left": -286.5,
-      "rotate": 270,
-      "attrs": { "temperature": "24", "humidity": "40", "flip": "1" }
+      "type": "wokwi-text",
+      "id": "label_lcd_ia",
+      "top": -220,
+      "left": -50,
+      "attrs": { "text": "Medição por IA" }
+    },
+    { "type": "wokwi-lcd1602", "id": "lcd_parallel", "top": 310.63, "left": 428.8, "attrs": {} },
+    {
+      "type": "wokwi-text",
+      "id": "label_lcd_linear",
+      "top": 280,
+      "left": 428.8,
+      "attrs": { "text": "Medição linear" }
+    },
+    {
+      "type": "wokwi-slide-potentiometer",
+      "id": "soil1",
+      "top": 0,
+      "left": -380,
+      "attrs": { "value": "45" }
+    },
+    {
+      "type": "wokwi-resistor",
+      "id": "r2",
+      "top": -34.45,
+      "left": -249.6,
+      "rotate": 180,
+      "attrs": { "value": "220" }
+    },
+    { "type": "chip-cd4511", "id": "u4511", "top": 80, "left": 100, "attrs": {} },
+    {
+      "type": "wokwi-7segment",
+      "id": "digit1",
+      "top": 43.38,
+      "left": 254.68,
+      "attrs": { "common": "cathode", "color": "red" }
+    },
+    {
+      "type": "wokwi-text",
+      "id": "label_digit_ia",
+      "top": 10,
+      "left": 250,
+      "attrs": { "text": "7 segmentos IA" }
+    },
+    {
+      "type": "wokwi-resistor",
+      "id": "r1",
+      "top": -120.55,
+      "left": -327.8,
+      "rotate": 180,
+      "attrs": { "value": "100" }
+    },
+    {
+      "type": "wokwi-7segment",
+      "id": "digit2",
+      "top": -177.42,
+      "left": 446.68,
+      "attrs": { "common": "cathode", "color": "red" }
+    },
+    {
+      "type": "wokwi-text",
+      "id": "label_digit_linear",
+      "top": -215,
+      "left": 438,
+      "attrs": { "text": "7 segmentos linear" }
+    },
+    {
+      "type": "wokwi-resistor",
+      "id": "r10",
+      "top": -180,
+      "left": 320,
+      "attrs": { "value": "330" }
+    },
+    {
+      "type": "wokwi-resistor",
+      "id": "r3",
+      "top": -156,
+      "left": 320,
+      "attrs": { "value": "330" }
+    },
+    {
+      "type": "wokwi-resistor",
+      "id": "r9",
+      "top": -132,
+      "left": 320,
+      "attrs": { "value": "330" }
+    },
+    {
+      "type": "wokwi-resistor",
+      "id": "r8",
+      "top": -108,
+      "left": 320,
+      "attrs": { "value": "330" }
+    },
+    { "type": "wokwi-resistor", "id": "r6", "top": -84, "left": 320, "attrs": { "value": "330" } },
+    { "type": "wokwi-resistor", "id": "r4", "top": -60, "left": 320, "attrs": { "value": "330" } },
+    { "type": "wokwi-resistor", "id": "r5", "top": -36, "left": 320, "attrs": { "value": "330" } },
+    { "type": "wokwi-resistor", "id": "r7", "top": -12, "left": 320, "attrs": { "value": "330" } },
+    {
+      "type": "wokwi-led",
+      "id": "led_irrigacao_linear",
+      "top": 169.2,
+      "left": 493.4,
+      "attrs": { "color": "blue" }
+    },
+    {
+      "type": "wokwi-text",
+      "id": "label_led_linear",
+      "top": 124.8,
+      "left": 489.6,
+      "attrs": { "text": "LED azul\nIrrigação linear" }
+    },
+    {
+      "type": "wokwi-resistor",
+      "id": "r11",
+      "top": 168,
+      "left": 180,
+      "attrs": { "value": "330" }
+    },
+    {
+      "type": "wokwi-led",
+      "id": "led_irrigacao_ia",
+      "top": 226.8,
+      "left": 579.8,
+      "attrs": { "color": "yellow", "lightColor": "#ffd700" }
+    },
+    {
+      "type": "wokwi-text",
+      "id": "label_led_ia",
+      "top": 192,
+      "left": 614.4,
+      "attrs": { "text": "LED dourado\nIrrigação por IA" }
+    },
+    {
+      "type": "wokwi-resistor",
+      "id": "r12",
+      "top": 230,
+      "left": 180,
+      "attrs": { "value": "330" }
     }
   ],
   "connections": [
     [ "esp:TX", "$serialMonitor:RX", "", [] ],
     [ "esp:RX", "$serialMonitor:TX", "", [] ],
-    [ "lcd1:GND", "esp:GND.2", "black", [ "h0" ] ],
-    [ "lcd1:VCC", "esp:5V", "red", [ "h-211.2", "v297.7", "v19.78" ] ],
-    [ "lcd1:SDA", "esp:1", "green", [ "h-48", "v57.8", "v86.98" ] ],
-    [ "lcd1:SCL", "esp:2", "magenta", [ "h-57.6", "v144.88" ] ],
-    [ "dht1:VCC", "esp:3V3", "red", [ "v163.2", "h19.2" ] ],
-    [ "dht1:GND", "esp:GND.1", "black", [ "v0" ] ],
-    [ "dht1:SDA", "esp:4", "green", [ "v-28.9", "h186.68" ] ]
+    [ "lcd_i2c:GND", "esp:GND.2", "black", [ "h0" ] ],
+    [ "lcd_i2c:VCC", "esp:5V", "red", [ "h0" ] ],
+    [ "lcd_i2c:SDA", "esp:1", "blue", [ "h-78.8", "v306.78" ] ],
+    [ "lcd_i2c:SCL", "esp:2", "magenta", [ "h-59.6", "v306.88" ] ],
+    [ "lcd_parallel:VSS", "esp:GND.3", "black", [ "h0" ] ],
+    [ "lcd_parallel:VDD", "esp:5V", "red", [ "v240", "h-625.22" ] ],
+    [ "lcd_parallel:V0", "esp:GND.3", "black", [ "v9.6", "h-548.87" ] ],
+    [ "lcd_parallel:RS", "esp:18", "blue", [ "v201.6", "h-644.22" ] ],
+    [ "lcd_parallel:RW", "esp:GND.3", "black", [ "v19.2", "h-567.87" ] ],
+    [ "lcd_parallel:E", "esp:19", "purple", [ "v38.4", "h-577.37" ] ],
+    [ "lcd_parallel:D4", "esp:20", "cyan", [ "v67.2", "h-625.37" ] ],
+    [ "lcd_parallel:D5", "esp:21", "orange", [ "v86.4", "h-634.87" ] ],
+    [ "lcd_parallel:D6", "esp:35", "yellow", [ "v105.6", "h-644.37" ] ],
+    [ "lcd_parallel:D7", "esp:36", "magenta", [ "v134.4", "h-653.87" ] ],
+    [ "lcd_parallel:A", "esp:5V", "red", [ "v268.8", "h-414.22" ] ],
+    [ "lcd_parallel:K", "esp:GND.3", "black", [ "v172.8", "h-673.37" ] ],
+    [ "esp:3V3.1", "r2:1", "red", [ "h0" ] ],
+    [ "r2:2", "soil1:VCC", "red", [ "h0" ] ],
+    [ "soil1:GND", "esp:GND.1", "black", [ "v0" ] ],
+    [ "soil1:SIG", "esp:4", "blue", [ "v0" ] ],
+    [ "u4511:VDD", "esp:5V", "red", [ "h0" ] ],
+    [ "u4511:VSS", "esp:GND.3", "black", [ "h0" ] ],
+    [ "u4511:LT", "esp:5V", "red", [ "h0" ] ],
+    [ "u4511:BL", "esp:5V", "red", [ "h0" ] ],
+    [ "u4511:LE", "esp:GND.3", "black", [ "h0" ] ],
+    [ "esp:5", "u4511:A", "blue", [ "h0" ] ],
+    [ "esp:6", "u4511:B", "yellow", [ "h0" ] ],
+    [ "esp:7", "u4511:C", "orange", [ "h0" ] ],
+    [ "esp:8", "u4511:D", "purple", [ "h0" ] ],
+    [ "u4511:SEG_A", "digit1:A", "blue", [ "h0" ] ],
+    [ "u4511:SEG_B", "digit1:B", "cyan", [ "h0" ] ],
+    [ "u4511:SEG_C", "digit1:C", "purple", [ "h0" ] ],
+    [ "u4511:SEG_D", "digit1:D", "orange", [ "h0" ] ],
+    [ "u4511:SEG_E", "digit1:E", "yellow", [ "h0" ] ],
+    [ "u4511:SEG_F", "digit1:F", "magenta", [ "h0" ] ],
+    [ "u4511:SEG_G", "digit1:G", "green", [ "h0" ] ],
+    [ "digit1:COM", "r1:1", "black", [ "h0" ] ],
+    [ "r1:2", "esp:GND.3", "black", [ "v38.4", "h270", "v417.78" ] ],
+    [ "esp:9", "r10:1", "blue", [ "h0" ] ],
+    [ "r10:2", "digit2:A", "blue", [ "v-36.85", "h101.2" ] ],
+    [ "esp:10", "r3:1", "cyan", [ "h0" ] ],
+    [ "r3:2", "digit2:B", "cyan", [ "v-51.25", "h110.8" ] ],
+    [ "esp:11", "r9:1", "purple", [ "h0" ] ],
+    [ "r9:2", "digit2:C", "purple", [ "v164.75", "h101.2" ] ],
+    [ "esp:12", "r8:1", "orange", [ "h0" ] ],
+    [ "r8:2", "digit2:D", "orange", [ "h0" ] ],
+    [ "esp:13", "r6:1", "yellow", [ "h0" ] ],
+    [ "r6:2", "digit2:E", "yellow", [ "h0" ] ],
+    [ "esp:14", "r4:1", "magenta", [ "h0" ] ],
+    [ "r4:2", "digit2:F", "magenta", [ "h178", "v-119.29" ] ],
+    [ "esp:15", "r5:1", "green", [ "h0" ] ],
+    [ "r5:2", "digit2:G", "green", [ "h34", "v-143.29" ] ],
+    [ "esp:37", "r7:1", "gray", [ "h0" ] ],
+    [ "r7:2", "digit2:DP", "gray", [ "h0" ] ],
+    [ "digit2:COM", "esp:GND.3", "black", [ "h0" ] ],
+    [ "esp:16", "r11:1", "blue", [ "h0" ] ],
+    [ "r11:2", "led_irrigacao_linear:A", "blue", [ "h0" ] ],
+    [ "led_irrigacao_linear:C", "esp:GND.3", "black", [ "h0" ] ],
+    [ "esp:17", "r12:1", "yellow", [ "h0" ] ],
+    [ "r12:2", "led_irrigacao_ia:A", "yellow", [ "h0" ] ],
+    [ "led_irrigacao_ia:C", "esp:GND.3", "black", [ "h0" ] ]
   ],
   "serialMonitor": { "display": "terminal", "newline": "lf" },
   "dependencies": {}
